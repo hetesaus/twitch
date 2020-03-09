@@ -4,7 +4,6 @@
 	</head>
 	<body onload="Init()">
 		<div class="uk-grid-collapse" uk-grid>
-
 			<div class="uk-width-1-4">
 				<div class="uk-grid-collapse uk-child-width-1-1" uk-grid>
 					<div class="uk-inline">
@@ -102,6 +101,8 @@
 	
 	function SwitchChannel(id) {
 		var old = channels[0];
+		
+		console.log('channel: ' + players[id].getChannel());
 		
 		channels[0] = channels[id];
 		channels[id] = old;
