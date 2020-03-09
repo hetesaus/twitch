@@ -56,7 +56,7 @@
   		data: {
 			players: [],
 			channels: [],
-			volume: 1,
+			volume: 1.0,
 			padding: 4
   		},
 		
@@ -71,16 +71,16 @@
 		methods: {
 			saveParameters() {
 				localStorage.setItem('twitchChannels', this.channels);
+				localStorage.setItem('twitchVolume', this.players[0].getVolume());
 			},
 		
 			getParameters() {	
 				var url = new URL(window.location.href);
-				
 				if (localStorage.getItem('twitchChannels') !== null) {
 					this.channels = localStorage.getItem('twitchChannels').split(',');
+					this.volume = localStorage.getItem('twitchVolume');
 					return;
 				}
-				
 				if (url.searchParams.get('channels')) {
 					this.channels = url.searchParams.get('channels').split(' ');
 					return;
@@ -95,17 +95,12 @@
 							width: this.getPlayerWidth(i) - this.padding,
 							height: this.getPlayerHeight(i) - this.padding,
 							layout: 'video',
+							scrolling: 'no'
 							channel: this.channels.length > 0 ? this.channels[i] : 'undefined',
 						});
 					
-					if (i > 0) { 
-						player.setVolume(0); 
-						player.setQuality("360p30");
-					} else {
-						player.setVolume(1);
-						player.setQuality("auto");
-					}
-					
+					player.setVolume(i > 0 ? 0 : volume);
+					player.setQuality(i > 0 ? "360p30" : "auto");				
 					this.players.push(player);
 				}
 			},		
@@ -144,7 +139,7 @@
 					this.players[i].setHeight(this.getPlayerHeight(i) - this.padding);
 				}
 			},
-		
+			
 			getPlayerWidth(index) {
 				var windowWidth = this.getWindowWidth();
 				var width = 
