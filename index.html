@@ -22,7 +22,7 @@
 						</button>
 					</div>
 					<div class="uk-inline">
-						<div id="player3" class="player"></div>        
+						<div id="player3" class="player"></div>
 						<button id="overlay3" class="overlayButton uk-width-1-1 uk-overlay uk-position-cover" onclick=SwitchChannel(3)>
 							<span id="player3name" class="channelName"></span>
 						</button>
@@ -76,8 +76,10 @@
 			channels.slice(0,5);
 		}
 		
-		for(i = 0; i < channels.length; i ++){
+		for(i = 0; i < 4; i ++){
 			if (channels[i] == '' || channels[i] == null || channels[i] == undefined) {
+				document.getElementById('player' + i).style.display = 'none';
+				document.getElementById('overlay' + i).style.display = 'none';
 				return;
 			}
 		
@@ -93,6 +95,8 @@
 			if(i > 0){
 				player.setVolume(0);
 				player.setQuality("360p30");
+				document.getElementById('player' + i).style.display = 'block';
+				document.getElementById('overlay' + i).style.display = 'block';
 				document.getElementById('player' + i + 'name').innerHTML = channels[i];
 			} else {
 				player.setVolume(1);
