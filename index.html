@@ -4,37 +4,39 @@
 	</head>
 	<body onload="Init()">
 		<div class="uk-grid-collapse" uk-grid>
-			<div id="errorMessage" class="uk-width-1-1 uk-flex uk-flex-middle uk-text-center">
+			<div id="errorMessage" class="uk-width-1-1 uk-flex uk-flex-middle uk-text-center uk-height-large" style="display: none">
 				<span>No channels selected, enter "?channels=[channel1]+[channel2]+[channel3]+[channel4]" in the browser url to select channels</span>
 			</div>
-			<div class="uk-width-1-4">
-				<div class="uk-grid-collapse uk-child-width-1-1" uk-grid>
-					<div class="uk-inline">
-						<div id="player1" class="player"></div>
-						<button id="overlay1" class="overlayButton uk-width-1-1 uk-overlay uk-position-cover" onclick=SwitchChannel(1)>
-							<span id="player1name" class="channelName"></span>
-						</button>
+			<div id="viewer">
+				<div class="uk-width-1-4">
+					<div class="uk-grid-collapse uk-child-width-1-1" uk-grid>
+						<div class="uk-inline">
+							<div id="player1" class="player"></div>
+							<button id="overlay1" class="overlayButton uk-width-1-1 uk-overlay uk-position-cover" onclick=SwitchChannel(1)>
+								<span id="player1name" class="channelName"></span>
+							</button>
+						</div>
+						<div class="uk-inline">
+							<div id="player2" class="player"></div>
+							<button id="overlay2" class="overlayButton uk-width-1-1 uk-overlay uk-position-cover" onclick=SwitchChannel(2)>
+								<span id="player2name" class="channelName"></span>
+							</button>
+						</div>
+						<div class="uk-inline">
+							<div id="player3" class="player"></div>
+							<button id="overlay3" class="overlayButton uk-width-1-1 uk-overlay uk-position-cover" onclick=SwitchChannel(3)>
+								<span id="player3name" class="channelName"></span>
+							</button>
+						 </div>
 					</div>
-					<div class="uk-inline">
-						<div id="player2" class="player"></div>
-						<button id="overlay2" class="overlayButton uk-width-1-1 uk-overlay uk-position-cover" onclick=SwitchChannel(2)>
-							<span id="player2name" class="channelName"></span>
-						</button>
-					</div>
-					<div class="uk-inline">
-						<div id="player3" class="player"></div>
-						<button id="overlay3" class="overlayButton uk-width-1-1 uk-overlay uk-position-cover" onclick=SwitchChannel(3)>
-							<span id="player3name" class="channelName"></span>
-						</button>
-					 </div>
 				</div>
-			</div>
-			<div class="uk-width-3-4 uk-inline">
-				<div id="player0" class="player"></div>
-			</div>
-			<div class="uk-grid-small uk-margin-small-top uk-width-1-1" uk-grid>
-				<div class="uk-width-expand"></div>
-				<div><a onclick="OpenChat()" uk-icon="commenting" uk-tooltip="Open chat"></a></div>
+				<div class="uk-width-3-4 uk-inline">
+					<div id="player0" class="player"></div>
+				</div>
+				<div class="uk-grid-small uk-margin-small-top uk-width-1-1" uk-grid>
+					<div class="uk-width-expand"></div>
+					<div><a onclick="OpenChat()" uk-icon="commenting" uk-tooltip="Open chat"></a></div>
+				</div>
 			</div>
 		</div>
 	</body>
@@ -54,10 +56,6 @@
 	});
 	
 	function Init() {
-		SetChannels();
-	}
-				
-	function SetChannels() {
 		var channels = [];
 		var url = new URL(window.location.href);
 		
@@ -67,13 +65,8 @@
 		
 		if (channels.length == 0) {
 			document.getElementById("errorMessage").style.display = "block";
+			document.getElementById("viewer").style.display = "none";
 			return;
-		} else {
-			document.getElementById("errorMessage").style.display = "none";
-		}
-		
-		if (channels.length > 4) {
-			channels.slice(0,5);
 		}
 		
 		for(i = 0; i < 4; i ++){
