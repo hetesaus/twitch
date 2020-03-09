@@ -44,7 +44,6 @@
 <script>
 
 	var players = [];
-	var channels = [];
 	var padding = 4;
 	
 	window.addEventListener('resize', function(event){
@@ -52,28 +51,17 @@
 	});
 	
 	function Init() {
-		GetParameters();
 		SetChannels();
 	}
-		
-	function SaveParameters() {
-		localStorage.setItem('twitchChannels', this.channels);
-	}
-		
-	function GetParameters() {	
+				
+	function SetChannels() {
+		var channels = [];
 		var url = new URL(window.location.href);
+		
 		if (url.searchParams.get('channels')) {
 			channels = url.searchParams.get('channels').split(' ');
-			return;
 		}
-		
-		if (localStorage.getItem('twitchChannels') !== null) {
-			channels = localStorage.getItem('twitchChannels').split(',');
-			return;
-		}
-	}
 	
-	function SetChannels() {
 		for(i = 0; i < channels.length; i ++){
 			var player =
 				new Twitch.Player("player" + i,
@@ -94,28 +82,20 @@
 			}
 			
 			players.push(player);
-			
-			SaveParameters();
 		}
 	}  
 	
 	function SwitchChannel(id) {
-		var old = channels[0];
+		var temp = players[0].getChannel();
+				
+		players[0].setChannel(players[id].getChannel());
+		players[id].setChannel(temp);
 		
-		console.log('channel: ' + players[id].getChannel());
-		
-		channels[0] = channels[id];
-		channels[id] = old;
-		players[0].setChannel(channels[0]);
-		players[id].setChannel(channels[id]);
-		
-		document.getElementById('player' + id + 'name').innerHTML = channels[id];
-		
-		SaveParameters();
+		document.getElementById('player' + id + 'name').innerHTML = temp;
 	}
 		
 	function OpenChat(){
-		window.open('https://www.twitch.tv/popout/' + channels[0] + '/chat?popout=', "", "width=400,height=700");
+		window.open('https://www.twitch.tv/popout/' + players[0].getChannel() + '/chat?popout=', "", "width=400,height=700");
 	}
 	
 	function SetPlayerSizes() {
