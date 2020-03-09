@@ -38,8 +38,8 @@
 								<li><a @click="openChat()" :uk-icon="'commenting'" uk-tooltip="Open chat"></a></li>
 							</ul>
 						</div>
-					</div>						
-				</div>		
+					</div>
+				</div>
 			</div>
 		</div>
 	</body>
@@ -74,25 +74,20 @@
 				localStorage.setItem('twitchChannels', this.channels);
 			},
 		
-			getParameters(){	
+			getParameters() {	
 				var url = new URL(window.location.href);
 				
-				// get from url
 				if (url.searchParams.get("channels")) {
 					this.channels = url.searchParams.get("channels").split(' ');
-					console.log(this.channels);
 					return;
 				}
 			
-				// get from local storage
 				if (localStorage.getItem('twitchChannels') !== null) {
 					this.channels = localStorage.getItem('twitchChannels').split(',');
-					console.log(this.channels);
-					return;
 				}
 			},
 			
-			setPlayers(){
+			setPlayers() {
 				for (var i = 0; i < 4; i ++) {
 					var player =
 						new Twitch.Player("player" + i,
@@ -103,7 +98,7 @@
 							channel: this.channels.length > 0 ? this.channels[i] : 'undefined',
 						});
 					
-					if(i > 0){ 
+					if (i > 0) { 
 						player.setVolume(0); 
 						player.setQuality("360p30");
 					} else {
@@ -115,42 +110,42 @@
 				}
 			},		
 			
-			setChannels(){	
-				for(var i = 0; i < this.channels.length; i ++){
+			setChannels() {	
+				for (var i = 0; i < this.channels.length; i ++) {
 					this.players[i].setChannel(this.channels[i]);
 					this.players[i].play();
 				}
 			},
 			
-			switchChannel(id){
-				if(this.channels[id] != undefined){
+			switchChannel(id) {
+				if (this.channels[id] != undefined) {
 					var old = this.channels[0];
 					this.channels[0] = this.channels[id];
 					this.channels[id] = old;
 					this.players[0].setChannel(this.channels[0]);
 					this.players[id].setChannel(this.channels[id]);
 					
-					console.log('switching channels');
+					console.log('switching from ' + this.channels[0] + ' to ' + this.channels[id]);
 				}
 				
 				this.saveParameters();
 			},
 						
-			openChat(){
-				if(this.channels != null && this.channels.length > 0){
+			openChat() {
+				if (this.channels != null && this.channels.length > 0) {
 					var url = 'https://www.twitch.tv/popout/' + this.channels[0] + '/chat?popout=';
 					window.open(url, "", "width=400,height=700");
 				}
 			},
 			
-			setPlayerSizes(){
-				for(var i = 0; i < 4; i++){
+			setPlayerSizes() {
+				for (var i = 0; i < 4; i++) {
 					this.players[i].setWidth(this.getPlayerWidth(i) - this.padding);
 					this.players[i].setHeight(this.getPlayerHeight(i) - this.padding);
 				}
 			},
 		
-			getPlayerWidth(index){
+			getPlayerWidth(index) {
 				var windowWidth = this.getWindowWidth();
 				var width = 
 					index == 0
@@ -159,12 +154,12 @@
 				return width;
 			},
 			
-			getPlayerHeight(index){
+			getPlayerHeight(index) {
 				var width = this.getPlayerWidth(index);
 				return width / 16 * 9;
 			},
 				
-			getWindowWidth(){
+			getWindowWidth() {
 				return window.innerWidth
 				|| document.documentElement.clientWidth
 				|| document.body.clientWidth;
