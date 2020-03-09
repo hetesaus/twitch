@@ -76,13 +76,14 @@
 			getParameters() {	
 				var url = new URL(window.location.href);
 				
-				if (url.searchParams.get("channels")) {
-					this.channels = url.searchParams.get("channels").split(' ');
-					return;
-				}
-			
 				if (localStorage.getItem('twitchChannels') !== null) {
 					this.channels = localStorage.getItem('twitchChannels').split(',');
+					return;
+				}
+				
+				if (url.searchParams.get('channels')) {
+					this.channels = url.searchParams.get('channels').split(' ');
+					return;
 				}
 			},
 			
@@ -127,7 +128,6 @@
 					
 					console.log('switching from ' + this.channels[id] + ' to ' + this.channels[0]);
 				}
-				
 				this.saveParameters();
 			},
 						
