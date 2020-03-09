@@ -28,7 +28,7 @@
 					</div>
 				</div>
 				<div class="uk-width-3-4 uk-inline">
-					<div ref="player0" id="player0" class="player"></div>
+					<div id="player0" class="player"></div>
 				</div>
 				
 				<div class="uk-grid-small uk-margin-small-top uk-width-1-1" uk-grid>
@@ -56,6 +56,7 @@
   		data: {
 			players: [],
 			channels: [],
+			volume: 1.0,
 			padding: 4
   		},
 		
@@ -70,11 +71,13 @@
 		methods: {
 			saveParameters() {
 				localStorage.setItem('twitchChannels', this.channels);
+				localStorage.setItem('twitchVolume', this.players[0].getVolume());
 			},
 		
 			getParameters() {	
 				if (localStorage.getItem('twitchChannels') !== null) {
 					this.channels = localStorage.getItem('twitchChannels').split(',');
+					this.volume = localStorage.getItem('twitchVolume');
 					return;
 				}
 				
@@ -87,30 +90,24 @@
 			
 			setPlayers() {
 				for (let i = 0; i < 4; i ++) {
-					let channel = this.channels.length > 0 ? this.channels[i] : 'undefined';
 					let player =
 						new Twitch.Player("player" + i,
 						{
 							width: this.getPlayerWidth(i) - this.padding,
 							height: this.getPlayerHeight(i) - this.padding,
 							layout: 'video',
-							channel: channel
+							scrolling: 'no'
+							channel: this.channels.length > 0 ? this.channels[i] : 'undefined',
 						});
 					
-					player.setVolume(0);
-					player.setQuality("360p30");				
+					player.setVolume(i > 0 ? 0 : volume);
+					player.setQuality(i > 0 ? "360p30" : "auto");				
 					this.players.push(player);
 				}
 			},		
 			
 			setChannels() {	
 				for (let i = 0; i < this.channels.length; i ++) {
-				
-					this.players[0].setChannel('hetesaus');
-					
-					console.log('TESTING: ' + '');
-				
-				
 					this.players[i].setChannel(this.channels[i]);
 					this.players[i].play();
 				}
@@ -122,7 +119,8 @@
 					this.channels[0] = this.channels[id];
 					this.channels[id] = old;
 					
-					this.setChannels();
+					this.players[0].setChannel(this.channels[0]);
+					this.players[id].setChannel(this.channels[id]);
 					
 					console.log('switching from ' + this.channels[id] + ' to ' + this.channels[0]);
 				}
@@ -144,11 +142,10 @@
 			
 			getPlayerWidth(index) {
 				let windowWidth = this.getWindowWidth();
-				let width = 					
+				return
 					index == 0
 						? windowWidth - (windowWidth / 4)
 						: windowWidth / 4;
-				return width;
 			},
 			
 			getPlayerHeight(index) {
