@@ -75,12 +75,13 @@
 			},
 		
 			getParameters() {	
-				var url = new URL(window.location.href);
 				if (localStorage.getItem('twitchChannels') !== null) {
 					this.channels = localStorage.getItem('twitchChannels').split(',');
 					this.volume = localStorage.getItem('twitchVolume');
 					return;
 				}
+				
+				let url = new URL(window.location.href);
 				if (url.searchParams.get('channels')) {
 					this.channels = url.searchParams.get('channels').split(' ');
 					return;
@@ -88,8 +89,8 @@
 			},
 			
 			setPlayers() {
-				for (var i = 0; i < 4; i ++) {
-					var player =
+				for (let i = 0; i < 4; i ++) {
+					let player =
 						new Twitch.Player("player" + i,
 						{
 							width: this.getPlayerWidth(i) - this.padding,
@@ -106,7 +107,7 @@
 			},		
 			
 			setChannels() {	
-				for (var i = 0; i < this.channels.length; i ++) {
+				for (let i = 0; i < this.channels.length; i ++) {
 					this.players[i].setChannel(this.channels[i]);
 					this.players[i].play();
 				}
@@ -114,7 +115,7 @@
 			
 			switchChannel(id) {
 				if (this.channels[id] != undefined) {
-					var old = this.channels[0];
+					let old = this.channels[0];
 					this.channels[0] = this.channels[id];
 					this.channels[id] = old;
 					
@@ -128,30 +129,27 @@
 						
 			openChat() {
 				if (this.channels != null && this.channels.length > 0) {
-					var url = 'https://www.twitch.tv/popout/' + this.channels[0] + '/chat?popout=';
-					window.open(url, "", "width=400,height=700");
+					window.open('https://www.twitch.tv/popout/' + this.channels[0] + '/chat?popout=', "", "width=400,height=700");
 				}
 			},
 			
 			setPlayerSizes() {
-				for (var i = 0; i < 4; i++) {
+				for (let i = 0; i < 4; i++) {
 					this.players[i].setWidth(this.getPlayerWidth(i) - this.padding);
 					this.players[i].setHeight(this.getPlayerHeight(i) - this.padding);
 				}
 			},
 			
 			getPlayerWidth(index) {
-				var windowWidth = this.getWindowWidth();
-				var width = 
+				let windowWidth = this.getWindowWidth();
+				return
 					index == 0
 						? windowWidth - (windowWidth / 4)
 						: windowWidth / 4;
-				return width;
 			},
 			
 			getPlayerHeight(index) {
-				var width = this.getPlayerWidth(index);
-				return width / 16 * 9;
+				return this.getPlayerWidth(index) / 16 * 9;
 			},
 				
 			getWindowWidth() {
