@@ -35,19 +35,7 @@
 			</div>
 			<div class="uk-grid-small uk-margin-small-top uk-width-1-1" uk-grid>
 				<div class="uk-width-expand"></div>
-				<div id="controls" class="uk-width-auto" hidden>
-					<ul class="uk-iconnav">
-						<li><a onclick="Clip()" uk-icon="video-camera" uk-tooltip="Clip"></a></li>
-						<li><a onclick="ToggleOverlay()" id="overlayIcon" uk-icon="lock" uk-tooltip="Toggle overlay"></a></li>
-						<li><a onclick="OpenChat()" uk-icon="commenting" uk-tooltip="Open chat"></a></li>
-						<li><a onclick="ToggleFullscreen()" uk-icon="expand" uk-tooltip="Fullscreen"></a></li>
-						<li></li>
-					</ul>
-					<hr class="uk-divider-vertical">
-				</div>
-				<div class="uk-width-auto">
-					<a uk-toggle="target: #controls; animation: uk-animation-slide-right-medium" uk-icon="more" uk-tooltip="Toggle controls"></a>
-				</div>
+				<div><a onclick="OpenChat()" uk-icon="commenting" uk-tooltip="Open chat"></a></div>
 			</div>
 		</div>
 	</body>
@@ -61,7 +49,6 @@
 
 	var players = [];
 	var channels = [];
-	var volume = 1;
 	var padding = 4;
 	
 	window.addEventListener('resize', function(event){
@@ -94,11 +81,10 @@
 					channel: channels[i],
 				});
 		
-			document.getElementById('player' + i + 'name').innerHTML = channels[i];
-			
 			if(i > 0){
 				player.setVolume(0);
 				player.setQuality("360p30");
+				document.getElementById('player' + i + 'name').innerHTML = channels[i];
 			} else {
 				player.setVolume(1);
 				player.setQuality("auto");
@@ -110,30 +96,20 @@
 	
 	function SwitchChannel(id){
 		if(channels[id] == undefined){
-				return;
+			return;
 		}
+		
 		var old = channels[0];
 		channels[0] = channels[id];
 		channels[id] = old;
 		
 		players[0].setChannel(channels[0]);
-		document.getElementById('player0name').innerHTML = channels[0];
-		
 		players[id].setChannel(channels[id]);
 		document.getElementById('player' + id + 'name').innerHTML = channels[id];
 	}
 		
 	function OpenChat(){
-		var url = 'https://www.twitch.tv/popout/' + channels[0] + '/chat?popout=';
-		window.open(url, "", "width=400,height=700");
-	}
-	
-	function Redirect(){
-		var url = 'twitchSelection.html' + '?channels=' + channels.join('+');
-		if (oauth != '' || clientId != ''){
-			url += '&clientid=' + clientId + '&oauth=' + oauth;
-		}
-		window.location.href = url;
+		window.open('https://www.twitch.tv/popout/' + channels[0] + '/chat?popout=', "", "width=400,height=700");
 	}
 	
 	function SetPlayerSizes(){
