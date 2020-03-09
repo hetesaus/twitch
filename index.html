@@ -53,21 +53,28 @@
 	});
 	
 	function Init() {
-		GetQueryString();
+		GetParameters();
 		SetChannels();
 	}
-	
-	function GetQueryString(){
-		let url = new URL(location.href);
-		let searchParams = new URLSearchParams(url.search); 
-		let channelParam = searchParams.get('channels');
-
-		if (channelParam != null){
-			channels = channelParam.split(' ');
+		
+	function SaveParameters() {
+		localStorage.setItem('twitchChannels', this.channels);
+	}
+		
+	function GetParameters() {	
+		if (localStorage.getItem('twitchChannels') !== null) {
+			channels = localStorage.getItem('twitchChannels').split(',');
+			return;
+		}
+				
+		var url = new URL(window.location.href);
+		if (url.searchParams.get('channels')) {
+			channels = url.searchParams.get('channels').split(' ');
+			return;
 		}
 	}
 	
-	function SetChannels(){
+	function SetChannels() {
 		for(i = 0; i < channels.length; i ++){
 			var player =
 				new Twitch.Player("player" + i,
@@ -91,17 +98,14 @@
 		}
 	}  
 	
-	function SwitchChannel(id){
-		if(channels[id] == undefined){
-			return;
-		}
-		
+	function SwitchChannel(id) {
 		var old = channels[0];
+		
 		channels[0] = channels[id];
 		channels[id] = old;
-		
 		players[0].setChannel(channels[0]);
 		players[id].setChannel(channels[id]);
+		
 		document.getElementById('player' + id + 'name').innerHTML = channels[id];
 	}
 		
@@ -109,7 +113,7 @@
 		window.open('https://www.twitch.tv/popout/' + channels[0] + '/chat?popout=', "", "width=400,height=700");
 	}
 	
-	function SetPlayerSizes(){
+	function SetPlayerSizes() {
 		for(var i = 0; i < 4; i++){
 			players[i].setWidth(GetPlayerWidth(i) - this.padding);
 			players[i].setHeight(GetPlayerHeight(i) - this.padding);
@@ -125,11 +129,11 @@
 		return width;
 	}	
 	
-	function GetPlayerHeight(index){
+	function GetPlayerHeight(index) {
 		return GetPlayerWidth(index) / 16 * 9;
 	}
 		
-	function GetWindowWidth(){
+	function GetWindowWidth() {
 		return window.innerWidth
 		|| document.documentElement.clientWidth
 		|| document.body.clientWidth;
