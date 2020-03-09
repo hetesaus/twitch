@@ -62,14 +62,14 @@
 	}
 		
 	function GetParameters() {	
-		if (localStorage.getItem('twitchChannels') !== null) {
-			channels = localStorage.getItem('twitchChannels').split(',');
-			return;
-		}
-				
 		var url = new URL(window.location.href);
 		if (url.searchParams.get('channels')) {
 			channels = url.searchParams.get('channels').split(' ');
+			return;
+		}
+		
+		if (localStorage.getItem('twitchChannels') !== null) {
+			channels = localStorage.getItem('twitchChannels').split(',');
 			return;
 		}
 	}
