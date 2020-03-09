@@ -4,6 +4,9 @@
 	</head>
 	<body onload="Init()">
 		<div class="uk-grid-collapse" uk-grid>
+			<div id="errorMessage" class="uk-width-1-1">
+				No channels selected, enter "?channels=[channel1]+[channel2]+[channel3]+[channel4]" in the browser url to select channels
+			</div>
 			<div class="uk-width-1-4">
 				<div class="uk-grid-collapse uk-child-width-1-1" uk-grid>
 					<div class="uk-inline">
@@ -61,8 +64,23 @@
 		if (url.searchParams.get('channels')) {
 			channels = url.searchParams.get('channels').split(' ');
 		}
-	
+		
+		if (channels.length == 0) {
+			document.getElementById("errorMessage").style.display = "block";
+			return;
+		} else {
+			document.getElementById("errorMessage").style.display = "none";
+		}
+		
+		if (channels.length > 4) {
+			channels.slice(0,5);			
+		}
+		
 		for(i = 0; i < channels.length; i ++){
+			if (channels[i] == '') {
+				return;
+			}
+		
 			var player =
 				new Twitch.Player("player" + i,
 				{
