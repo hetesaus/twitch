@@ -95,6 +95,8 @@
 			}
 			
 			players.push(player);
+			
+			SaveParameters();
 		}
 	}  
 	
@@ -107,6 +109,8 @@
 		players[id].setChannel(channels[id]);
 		
 		document.getElementById('player' + id + 'name').innerHTML = channels[id];
+		
+		SaveParameters();
 	}
 		
 	function OpenChat(){
