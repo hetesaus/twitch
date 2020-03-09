@@ -4,40 +4,39 @@
 	</head>
 	<body>
 		<div id="app">
-			<div>
-				<div class="uk-grid-collapse" uk-grid>
-					<div class="uk-width-1-4">
-						<div class="uk-grid-collapse uk-child-width-1-1" uk-grid>
-							<div class="uk-inline">
-								<div id="player1" class="player"></div>
-								<button class="overlayButton uk-width-1-1 uk-overlay uk-position-cover" @click="switchChannel(1)">
-									<span class="channelName">{{ channels[1] }}</span>
-								</button>
-							</div>
-							<div class="uk-inline">
-								<div id="player2" class="player"></div>
-								<button class="overlayButton uk-width-1-1 uk-overlay uk-position-cover" @click="switchChannel(2)">
-									<span class="channelName">{{ channels[2] }}</span>
-								</button>
-							</div>
-							<div class="uk-inline">
-								<div id="player3" class="player"></div>        
-								<button class="overlayButton uk-width-1-1 uk-overlay uk-position-cover" @click="switchChannel(3)">
-									<span class="channelName">{{ channels[3] }}</span>
-								</button>
-							 </div>
+			<div class="uk-grid-collapse" uk-grid>
+				<div class="uk-width-1-4">
+					<div class="uk-grid-collapse uk-child-width-1-1" uk-grid>
+						<div class="uk-inline">
+							<div id="player1" class="player"></div>
+							<button class="overlayButton uk-width-1-1 uk-overlay uk-position-cover" @click="switchChannel(1)">
+								<span class="channelName">{{ channels[1] }}</span>
+							</button>
 						</div>
-					</div>
-					<div class="uk-width-3-4 uk-inline">
-						<div id="player0" class="player"></div>
-					</div>
-					<div class="uk-grid-small uk-margin-small-top uk-width-1-1" uk-grid>
-						<div class="uk-width-expand"></div>
-						<div>
-							<ul class="uk-iconnav">
-								<li><a @click="openChat()" :uk-icon="'commenting'" uk-tooltip="Open chat"></a></li>
-							</ul>
+						<div class="uk-inline">
+							<div id="player2" class="player"></div>
+							<button class="overlayButton uk-width-1-1 uk-overlay uk-position-cover" @click="switchChannel(2)">
+								<span class="channelName">{{ channels[2] }}</span>
+							</button>
 						</div>
+						<div class="uk-inline">
+							<div id="player3" class="player"></div>        
+							<button class="overlayButton uk-width-1-1 uk-overlay uk-position-cover" @click="switchChannel(3)">
+								<span class="channelName">{{ channels[3] }}</span>
+							</button>
+						 </div>
+					</div>
+				</div>
+				<div class="uk-width-3-4 uk-inline">
+					<div id="player0" class="player"></div>
+				</div>
+				
+				<div class="uk-grid-small uk-margin-small-top uk-width-1-1" uk-grid>
+					<div class="uk-width-expand"></div>
+					<div>
+						<ul class="uk-iconnav">
+							<li><a @click="openChat()" :uk-icon="'commenting'" uk-tooltip="Open chat"></a></li>
+						</ul>
 					</div>
 				</div>
 			</div>
@@ -122,10 +121,11 @@
 					var old = this.channels[0];
 					this.channels[0] = this.channels[id];
 					this.channels[id] = old;
+					
 					this.players[0].setChannel(this.channels[0]);
 					this.players[id].setChannel(this.channels[id]);
 					
-					console.log('switching from ' + this.channels[0] + ' to ' + this.channels[id]);
+					console.log('switching from ' + this.channels[id] + ' to ' + this.channels[0]);
 				}
 				
 				this.saveParameters();
